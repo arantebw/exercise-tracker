@@ -1,6 +1,7 @@
 // /app.js
 
 'use strict';
+const mongoose = require('mongoose');
 require('dotenv').config();
 const cors = require('cors');
 const express = require('express');
@@ -11,6 +12,16 @@ const app = express();
 // middlewares
 
 app.use(cors({ optionSuccess: 200 }));
+
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true }).then(
+    () => {
+	console.log('database connection established');
+    },
+    err => {
+	console.log(err);
+	res.json({ "error": err });
+    }
+);
 
 // routes
 

@@ -1,35 +1,36 @@
 {
-    "name": "exercise-tracker",
-    "version": "1.0.0",
-    "description": "A freeCodeCamp - APIs and Microservices Certification: Exercise Tracker project.",
-    "main": "server.js",
-    "scripts": {
-	"test": "echo \"Error: no test specified\" && exit 1",
-	"dev": "nodemon server.js"
-    },
-    "repository": {
-	"type": "git",
-	"url": "git+https://github.com/arantebw/exercise-tracker.git"
-    },
-    "keywords": [
-	"freecodecamp",
-	"api",
-	"microservice",
-	"node",
-	"express",
-	"javascript",
-	"exercise",
-	"tracker"
-    ],
-    "author": "Billy Arante",
-    "license": "MIT",
-    "bugs": {
-	"url": "https://github.com/arantebw/exercise-tracker/issues"
-    },
-    "homepage": "https://github.com/arantebw/exercise-tracker#readme",
-    "dependencies": {
-	"cors": "^2.8.5",
-	"dotenv": "^8.0.0",
-	"express": "^4.17.1"
-    }
+   "name": "exercise-tracker",
+   "version": "1.0.0",
+   "description": "A freeCodeCamp - APIs and Microservices Certification: Exercise Tracker project.",
+   "main": "server.js",
+   "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "dev": "nodemon server.js"
+   },
+   "repository": {
+      "type": "git",
+      "url": "git+https://github.com/arantebw/exercise-tracker.git"
+   },
+   "keywords": [
+      "freecodecamp",
+      "api",
+      "microservice",
+      "node",
+      "express",
+      "javascript",
+      "exercise",
+      "tracker"
+   ],
+   "author": "Billy Arante",
+   "license": "MIT",
+   "bugs": {
+      "url": "https://github.com/arantebw/exercise-tracker/issues"
+   },
+   "homepage": "https://github.com/arantebw/exercise-tracker#readme",
+   "dependencies": {
+      "cors": "^2.8.5",
+      "dotenv": "^8.0.0",
+      "express": "^4.17.1",
+      "mongoose": "^5.6.5"
+   }
 }
