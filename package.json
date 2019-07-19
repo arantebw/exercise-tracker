@@ -28,6 +28,7 @@
    },
    "homepage": "https://github.com/arantebw/exercise-tracker#readme",
    "dependencies": {
+      "body-parser": "^1.19.0",
       "cors": "^2.8.5",
       "dotenv": "^8.0.0",
       "express": "^4.17.1",
