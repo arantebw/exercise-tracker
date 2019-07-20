@@ -33,28 +33,24 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true }).then(
 
 // routes
 
-app.get('/', (req, res, next) => {
-    next();
-}, (req, res) => {
+app.get('/', (req, res) => {
     res.send('app is now up and running');
 });
 
-let newUser, newExercise;
-
-app.post('/api/exercise/new-user', (req, res, next) => {
+let newUser;
+app.post('/api/exercise/new-user', (req, res) => {
     newUser = new User({
 	"username": req.body.username
     });
     newUser.save();
-    next();
-}, (req, res) => {
     res.json({
 	"username": newUser.username,
 	"_id": newUser.id
     });
 });
 
-app.post('/api/exercise/add', (req, res, next) => {
+let newExercise;
+app.post('/api/exercise/add', (req, res) => {
     newExercise = new Exercise({
 	"user": req.body.userId,
 	"description": req.body.description,
@@ -66,18 +62,30 @@ app.post('/api/exercise/add', (req, res, next) => {
 	    if (err) {
 		throw new Error(err);
 	    }
-	    user.exercises.push(newExercise.id);
+	    user.exercises.push(newExercise);
 	    user.save();
 	});
     });
-    next();
-}, (req, res) => {
     res.json({
-	"username": "",
-	"description": "",
-	"duration": 0,
-	"_id": "",
-	"date": ""
+	"username": newExercise.user,
+	"description": newExercise.description,
+	"duration": newExercise.duration,
+	"_id": newExercise.user,
+	"date": newExercise.date
+    });
+});
+
+app.get('/api/exercise/log', (req, res, next) => {
+    User.findById(req.query.userId).exec((err, user) => {
+	if (err) {
+	    throw new Error(err);
+	}
+
+	res.json({
+	    "_id": user.id,
+	    "username": user.username,
+	    "count": user.exercises.length
+	});
     });
 });
 
