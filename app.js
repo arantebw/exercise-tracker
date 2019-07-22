@@ -40,9 +40,15 @@ app.get('/', (req, res) => {
 let newUser;
 app.post('/api/exercise/new-user', (req, res) => {
     newUser = new User({
-	"username": req.body.username
+	"username": req.body.username,
+	"exercises": []
     });
-    newUser.save();
+    newUser.save((err, user) => {
+	if (err) {
+	    throw new Error(err);
+	}
+	console.log('new user created');
+    });
     res.json({
 	"username": newUser.username,
 	"_id": newUser.id
@@ -55,7 +61,7 @@ app.post('/api/exercise/add', (req, res) => {
 	"user": req.body.userId,
 	"description": req.body.description,
 	"duration": req.body.duration,
-	"date": req.body.date
+	"date": Date.UTC(req.body.date)
     });
     newExercise.save(err => {
 	User.findById(req.body.userId).exec((err, user) => {
@@ -63,15 +69,22 @@ app.post('/api/exercise/add', (req, res) => {
 		throw new Error(err);
 	    }
 	    user.exercises.push(newExercise);
-	    user.save();
+	    user.save((err, user) => {
+		if (err) {
+		    throw new Error(err);
+		}
+		console.log('new exercise created');
+	    });
 	});
     });
-    res.json({
-	"username": "",
-	"description": newExercise.description,
-	"duration": newExercise.duration,
-	"_id": newExercise.user,
-	"date": newExercise.date
+    User.populate(newExercise, {path: 'user', model: 'User', match: {_id: req.body.userId}, select: {username: 1}}, function (err, exercise) {
+	res.json({
+	    "username": exercise.user.username,
+	    "description": newExercise.description,
+	    "duration": newExercise.duration,
+	    "_id": newExercise.user.id,
+	    "date": newExercise.date
+	});
     });
 });
 
