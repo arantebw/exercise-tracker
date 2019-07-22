@@ -67,7 +67,7 @@ app.post('/api/exercise/add', (req, res) => {
 	});
     });
     res.json({
-	"username": newExercise.user,
+	"username": "",
 	"description": newExercise.description,
 	"duration": newExercise.duration,
 	"_id": newExercise.user,
@@ -80,7 +80,9 @@ app.get('/api/exercise/log', (req, res, next) => {
 	if (err) {
 	    throw new Error(err);
 	}
-
+	Exercise.populate(user, { path: 'exercises', model: 'Exercise', match: { user: user.id } }, function (err, user) {
+	    console.log(user.exercises);
+	});
 	res.json({
 	    "_id": user.id,
 	    "username": user.username,
