@@ -61,19 +61,23 @@ app.post('/api/exercise/add', (req, res) => {
 	"user": req.body.userId,
 	"description": req.body.description,
 	"duration": req.body.duration,
-	"date": Date.UTC(req.body.date)
+	"date": req.body.date
     });
-    newExercise.save(err => {
-	User.findById(req.body.userId).exec((err, user) => {
+    newExercise.save((err, exercise) => {
+	if (err) {
+	    throw new Error(err);
+	}
+	console.log('new exercise created');
+	User.findById(exercise.user.id).exec((err, user) => {
 	    if (err) {
 		throw new Error(err);
 	    }
-	    user.exercises.push(newExercise);
+	    user.exercises.push(exercise);
 	    user.save((err, user) => {
 		if (err) {
 		    throw new Error(err);
 		}
-		console.log('new exercise created');
+		console.log('new exercise-to-user created');
 	    });
 	});
     });
