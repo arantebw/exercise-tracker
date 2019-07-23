@@ -1,6 +1,7 @@
 // /server.js
 
 'use strict';
+
 const app = require('./app');
 require('dotenv').config();
 const express = require('express');

@@ -61,7 +61,7 @@ app.post('/api/exercise/add', (req, res) => {
 	"user": req.body.userId,
 	"description": req.body.description,
 	"duration": req.body.duration,
-	"date": req.body.date
+	"date": new Date(req.body.date)
     });
     newExercise.save((err, exercise) => {
 	if (err) {
@@ -87,7 +87,7 @@ app.post('/api/exercise/add', (req, res) => {
 	    "description": newExercise.description,
 	    "duration": newExercise.duration,
 	    "_id": newExercise.user.id,
-	    "date": newExercise.date
+	    "date": newExercise.date.toDateString()
 	});
     });
 });
