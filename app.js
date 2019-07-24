@@ -93,16 +93,26 @@ app.post('/api/exercise/add', (req, res) => {
 });
 
 let userId, matchObj, setLimit;
+let responseJson = {
+    "_id": "",
+    "username": "",
+    "from": "",
+    "to": "",
+    "count": 0,
+    "log": []
+};
 app.get('/api/exercise/log', (req, res, next) => {
     try {
 	if (!req.query.userId) {
 	    throw new Error('Invalid userId');
 	}
+
 	userId = req.query.userId;
 	User.findById(userId).exec((err, user) => {
 	    if (err) {
 		throw new Error(err);
 	    }
+
 	    // customize match object
 	    matchObj = {user: user.id};
 	    if (req.query.from && req.query.to) {
@@ -113,10 +123,13 @@ app.get('/api/exercise/log', (req, res, next) => {
 	    } else if (req.query.from) {
 		matchObj['date'] = {$gte: req.query.from};
 	    }
+
+	    // limit exercises to display
 	    setLimit = user.exercises.length;
 	    if (req.query.limit) {
 		setLimit = req.query.limit;
 	    }
+
 	    Exercise.populate(user, {path: 'exercises', model: 'Exercise', match: matchObj, select: {description: 1, duration: 1, date: 1, _id: 0}, options: {limit: setLimit}}, function (err, user) {
 		// format exercises first
 		let exercises = user.exercises.map((exercise) => {
@@ -126,12 +139,21 @@ app.get('/api/exercise/log', (req, res, next) => {
 			date: exercise.date.toDateString()
 		    };
 		});
-		res.json({
-		    "_id": user.id,
-		    "username": user.username,
-		    "count": user.exercises.length,
-		    "log": exercises
-		});
+		responseJson['_id'] = user.id;
+		responseJson['username'] = user.username;
+		if (req.query.from) {
+		    responseJson['from'] = new Date(req.query.from).toDateString();
+		} else {
+		    delete responseJson['from'];
+		}
+		if (req.query.to) {
+		    responseJson['to'] = new Date(req.query.to).toDateString();
+		} else {
+		    delete responseJson['to'];
+		}
+		responseJson['count'] = exercises.length;
+		responseJson['log'] = exercises;
+		res.json(responseJson);
 	    });
 	});
     } catch (err) {
