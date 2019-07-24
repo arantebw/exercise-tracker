@@ -6,6 +6,7 @@
 const User = require('./models/user');
 const Exercise = require('./models/exercise');
 
+const sass = require('node-sass-middleware');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 require('dotenv').config();
@@ -15,14 +16,20 @@ const express = require('express');
 // init app
 const app = express();
 
-// load static files
-app.use(express.static(__dirname + '/views/'));
+app.use(sass({
+    src: __dirname + '/assets',
+    dest: __dirname + '/public',
+    debug: true,
+    outputStyle: 'compressed'
+}));
 
 // middlewares
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(cors({ optionSuccess: 200 }));
+
+app.use(express.static(__dirname + '/public'));
 
 mongoose.connect(process.env.MONGODB_LOCAL, { useNewUrlParser: true }).then(
     () => {
@@ -37,7 +44,7 @@ mongoose.connect(process.env.MONGODB_LOCAL, { useNewUrlParser: true }).then(
 // routes
 
 app.get('/', (req, res) => {
-    res.send('app is now up and running');
+    res.sendFile(__dirname + '/views/index.html');
 });
 
 let newUser;
