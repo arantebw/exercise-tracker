@@ -105,7 +105,12 @@ app.get('/api/exercise/log', (req, res, next) => {
 	    }
 	    // customize match object
 	    matchObj = {user: user.id};
-	    if (req.query.from) {
+	    if (req.query.from && req.query.to) {
+		matchObj['date'] = {
+		    $gte: req.query.from,
+		    $lte: req.query.to
+		};
+	    } else if (req.query.from) {
 		matchObj['date'] = {$gte: req.query.from};
 	    }
 	    Exercise.populate(user, {path: 'exercises', model: 'Exercise', match: matchObj, select: {description: 1, duration: 1, date: 1, _id: 0}}, function (err, user) {
