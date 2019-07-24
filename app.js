@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(cors({ optionSuccess: 200 }));
 
-mongoose.connect(process.env.MONGODB_LOCAL, { useNewUrlParser: true }).then(
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true }).then(
     () => {
 	console.log('database connection established');
     },
