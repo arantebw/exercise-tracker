@@ -94,28 +94,35 @@ app.post('/api/exercise/add', (req, res) => {
 
 let userId;
 app.get('/api/exercise/log', (req, res, next) => {
-    userId = req.query.userId;
-    User.findById(userId).exec((err, user) => {
-	if (err) {
-	    throw new Error(err);
+    try {
+	if (!req.query.userId) {
+	    throw new Error('Invalid userId');
 	}
-	Exercise.populate(user, {path: 'exercises', model: 'Exercise', match: {user: user.id}, select: {description: 1, duration: 1, date: 1, _id: 0}}, function (err, user) {
-	    // format exercises first
-	    let exercises = user.exercises.map((exercise) => {
-		return {
-		    description: exercise.description,
-		    duration: exercise.duration,
-		    date: exercise.date.toDateString()
-		};
-	    });
-	    res.json({
-		"_id": user.id,
-		"username": user.username,
-		"count": user.exercises.length,
-		"log": exercises
+	userId = req.query.userId;
+	User.findById(userId).exec((err, user) => {
+	    if (err) {
+		throw new Error(err);
+	    }
+	    Exercise.populate(user, {path: 'exercises', model: 'Exercise', match: {user: user.id}, select: {description: 1, duration: 1, date: 1, _id: 0}}, function (err, user) {
+		// format exercises first
+		let exercises = user.exercises.map((exercise) => {
+		    return {
+			description: exercise.description,
+			duration: exercise.duration,
+			date: exercise.date.toDateString()
+		    };
+		});
+		res.json({
+		    "_id": user.id,
+		    "username": user.username,
+		    "count": user.exercises.length,
+		    "log": exercises
+		});
 	    });
 	});
-    });	
+    } catch (err) {
+	res.send(err.message);
+    }
 });
 
 module.exports = app;
