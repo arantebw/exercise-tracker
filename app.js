@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(cors({ optionSuccess: 200 }));
 
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true }).then(
+mongoose.connect(process.env.MONGODB_LOCAL, { useNewUrlParser: true }).then(
     () => {
 	console.log('database connection established');
     },
@@ -92,12 +92,15 @@ app.post('/api/exercise/add', (req, res) => {
     });
 });
 
+let userId;
 app.get('/api/exercise/log', (req, res, next) => {
-    User.findById(req.query.userId).exec((err, user) => {
+    userId = req.query.userId;
+    User.findById(userId).exec((err, user) => {
 	if (err) {
 	    throw new Error(err);
 	}
 	Exercise.populate(user, {path: 'exercises', model: 'Exercise', match: {user: user.id}, select: {description: 1, duration: 1, date: 1, _id: 0}}, function (err, user) {
+	    // format exercises first
 	    let exercises = user.exercises.map((exercise) => {
 		return {
 		    description: exercise.description,
@@ -112,7 +115,7 @@ app.get('/api/exercise/log', (req, res, next) => {
 		"log": exercises
 	    });
 	});
-    });
+    });	
 });
 
 module.exports = app;
