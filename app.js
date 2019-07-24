@@ -92,7 +92,7 @@ app.post('/api/exercise/add', (req, res) => {
     });
 });
 
-let userId, matchObj;
+let userId, matchObj, setLimit;
 app.get('/api/exercise/log', (req, res, next) => {
     try {
 	if (!req.query.userId) {
@@ -113,7 +113,11 @@ app.get('/api/exercise/log', (req, res, next) => {
 	    } else if (req.query.from) {
 		matchObj['date'] = {$gte: req.query.from};
 	    }
-	    Exercise.populate(user, {path: 'exercises', model: 'Exercise', match: matchObj, select: {description: 1, duration: 1, date: 1, _id: 0}}, function (err, user) {
+	    setLimit = user.exercises.length;
+	    if (req.query.limit) {
+		setLimit = req.query.limit;
+	    }
+	    Exercise.populate(user, {path: 'exercises', model: 'Exercise', match: matchObj, select: {description: 1, duration: 1, date: 1, _id: 0}, options: {limit: setLimit}}, function (err, user) {
 		// format exercises first
 		let exercises = user.exercises.map((exercise) => {
 		    return {
