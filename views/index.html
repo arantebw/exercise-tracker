@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Exercise Tracker</title>
+  </head>
+  <body>
+    <header>
+      <h1>Exercise Tracker</h1>
+    </header>
+    <main>
+      <div class="user">
+	<h2>Create A New User</h2>
+	<p>POST /api/exercise/new-user</p>
+	<input type="text" placeholder="Username">
+	<input type="submit" value="Create">
+      </div>
+      <div class="exercise">
+	<h2>Add Exercise(s)</h2>
+	<p>POST /api/exercise/add</p>
+	<input type="text" placeholder="User ID *">
+	<input type="text" placeholder="Description *">
+	<input type="text" placeholder="Duration (min) *">
+	<input type="text" placeholder="Date (YYYY-MM-DD)">
+	<input type="submit" value="Add">
+      </div>
+      <div class="log">
+	<h2>Retrieve Exercises</h2>
+	<p>GET /api/exercise/log?{userId}[&from][&to][&limit]</p>
+	<ul>
+	  <li>{} = Required</li>
+	  <li>[] = Optional</li>
+	  <li>from, to = Date (YYYY-MM-DD)</li>
+	  <li>limit = Number</li>
+	</ul>
+      </div>
+    </main>
+    <footer>
+      <p>Made with ? and ? from the <a href="#">Philippines</a> by <a href="#">Billy Arante</a></p>
+      <ul>
+	<li><a href="#">freeCodeCamp</a></li>
+	<li><a href="#">GitHub</a></li>
+	<li><a href="#">LinkedIn</a></li>
+      </ul>
+    </footer>
+  </body>
+</html>

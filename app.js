@@ -15,13 +15,16 @@ const express = require('express');
 // init app
 const app = express();
 
+// load static files
+app.use(express.static(__dirname + '/views/'));
+
 // middlewares
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(cors({ optionSuccess: 200 }));
 
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true }).then(
+mongoose.connect(process.env.MONGODB_LOCAL, { useNewUrlParser: true }).then(
     () => {
 	console.log('database connection established');
     },
