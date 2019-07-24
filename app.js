@@ -92,7 +92,7 @@ app.post('/api/exercise/add', (req, res) => {
     });
 });
 
-let userId;
+let userId, matchObj;
 app.get('/api/exercise/log', (req, res, next) => {
     try {
 	if (!req.query.userId) {
@@ -103,7 +103,12 @@ app.get('/api/exercise/log', (req, res, next) => {
 	    if (err) {
 		throw new Error(err);
 	    }
-	    Exercise.populate(user, {path: 'exercises', model: 'Exercise', match: {user: user.id}, select: {description: 1, duration: 1, date: 1, _id: 0}}, function (err, user) {
+	    // customize match object
+	    matchObj = {user: user.id};
+	    if (req.query.from) {
+		matchObj['date'] = {$gte: req.query.from};
+	    }
+	    Exercise.populate(user, {path: 'exercises', model: 'Exercise', match: matchObj, select: {description: 1, duration: 1, date: 1, _id: 0}}, function (err, user) {
 		// format exercises first
 		let exercises = user.exercises.map((exercise) => {
 		    return {
