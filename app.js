@@ -2,7 +2,7 @@
 
 'use strict';
 
-// models
+// Models
 const User = require('./models/user');
 const Exercise = require('./models/exercise');
 
@@ -13,9 +13,24 @@ require('dotenv').config();
 const cors = require('cors');
 const express = require('express');
 
-// init app
+// Init app
 const app = express();
 
+// Middlewares
+
+// Font Awesome
+app.use('/fontawesome', express.static(__dirname + '/node_modules/@fortawesome/fontawesome-free/'));
+
+// Popper
+app.use('/popper', express.static(__dirname + '/node_modules/popper.js/dist/umd/'));
+
+// jQuery
+app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
+
+// Bootstrap
+app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap/dist/'));
+
+// Sass
 app.use(sass({
     src: __dirname + '/assets',
     dest: __dirname + '/public',
@@ -23,13 +38,13 @@ app.use(sass({
     outputStyle: 'compressed'
 }));
 
-// middlewares
-
+// Body Parser
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(cors({ optionSuccess: 200 }));
-
 app.use(express.static(__dirname + '/public'));
+
+// CORS
+app.use(cors({ optionSuccess: 200 }));
 
 mongoose.connect(process.env.MONGODB_LOCAL, { useNewUrlParser: true }).then(
     () => {
@@ -41,7 +56,7 @@ mongoose.connect(process.env.MONGODB_LOCAL, { useNewUrlParser: true }).then(
     }
 );
 
-// routes
+// Routes
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/views/index.html');
