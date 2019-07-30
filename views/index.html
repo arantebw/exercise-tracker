@@ -27,7 +27,7 @@
 	  <h2 class="card-title">Create A New User</h2>
 	  <h3 class="card-subtitle mb-2 text-muted">POST /api/exercise/new-user</h3>
 	  <form method="POST" action="/api/exercise/new-user" class="input-group">
-	    <input name="username" class="form-control" type="text" placeholder="Username">
+	    <input name="username" class="form-control" type="text" placeholder="Username" required>
 	    <div class="input-group-append">
 	      <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Create</button>
 	    </div>
@@ -38,9 +38,9 @@
 	<form method="POST" action="/api/exercise/add" class="card-body">
 	  <h2 class="card-title">Add Exercise(s)</h2>
 	  <h3 class="card-subtitle mb-2 text-muted">POST /api/exercise/add</h3>
-	  <input name="userId" class="form-control mb-2" type="text" placeholder="User ID *">
-	  <input name="description" class="form-control mb-2" type="text" placeholder="Description *">
-	  <input name="duration" class="form-control mb-2" type="text" placeholder="Duration (min) *">
+	  <input name="userId" class="form-control mb-2" type="text" placeholder="User ID *" required>
+	  <input name="description" class="form-control mb-2" type="text" placeholder="Description *" required>
+	  <input name="duration" class="form-control mb-2" type="text" placeholder="Duration (min) *" required>
 	  <input name="date" class="form-control mb-2" type="text" placeholder="Date (YYYY-MM-DD)">
 	  <p class="text-right">
 	    <input class="btn btn-outline-secondary" type="submit" value="Add">
