@@ -35,17 +35,17 @@
 	</div>
       </div>
       <div class="exercise card mb-3">
-	<div class="card-body">
+	<form method="POST" action="/api/exercise/add" class="card-body">
 	  <h2 class="card-title">Add Exercise(s)</h2>
 	  <h3 class="card-subtitle mb-2 text-muted">POST /api/exercise/add</h3>
-	  <input class="form-control mb-2" type="text" placeholder="User ID *">
-	  <input class="form-control mb-2" type="text" placeholder="Description *">
-	  <input class="form-control mb-2" type="text" placeholder="Duration (min) *">
-	  <input class="form-control mb-2" type="text" placeholder="Date (YYYY-MM-DD)">
+	  <input name="userId" class="form-control mb-2" type="text" placeholder="User ID *">
+	  <input name="description" class="form-control mb-2" type="text" placeholder="Description *">
+	  <input name="duration" class="form-control mb-2" type="text" placeholder="Duration (min) *">
+	  <input name="date" class="form-control mb-2" type="text" placeholder="Date (YYYY-MM-DD)">
 	  <p class="text-right">
 	    <input class="btn btn-outline-secondary" type="submit" value="Add">
 	  </p>
-	</div>
+	</form>
       </div>
       <div class="log card mb-3">
 	<div class="card-body">
