@@ -46,6 +46,7 @@ app.use(express.static(__dirname + '/public'));
 // CORS
 app.use(cors({ optionSuccess: 200 }));
 
+// MongoDB Atlas
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true }).then(
     () => {
 	console.log('database connection established');
