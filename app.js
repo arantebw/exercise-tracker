@@ -6,6 +6,7 @@
 const User = require('./models/user');
 const Exercise = require('./models/exercise');
 
+const { check, validationResult } = require('express-validator');
 const sass = require('node-sass-middleware');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -64,7 +65,11 @@ app.get('/', (req, res) => {
 });
 
 let newUser;
-app.post('/api/exercise/new-user', (req, res) => {
+app.post('/api/exercise/new-user', [check('username').exists()], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+	return res.status(400).send('"username" is required');
+    }
     newUser = new User({
 	"username": req.body.username,
 	"exercises": []
